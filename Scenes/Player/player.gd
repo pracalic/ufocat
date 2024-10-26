@@ -5,6 +5,10 @@ var health = 100.0
 const DAMAGE_PER_SECOND = 30.0
 #signal  health_end
 
+
+func _ready() -> void:
+	Main.player = self
+
 #func _ready() -> void:
 	#$"%ProgressBar".value = health
 

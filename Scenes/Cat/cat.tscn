@@ -7,11 +7,14 @@
 radius = 13.0
 
 [node name="Cat" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 3
 motion_mode = 1
 floor_stop_on_slope = false
 floor_block_on_wall = false
 safe_margin = 8.0
 script = ExtResource("1_oyjdy")
+speed = 70.0
 stop_distance = 500.0
 metadata/_edit_group_ = true
 

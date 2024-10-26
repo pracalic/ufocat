@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 @onready var catAgent = $NavigationAgent2D
-@export var player:CharacterBody2D = null
+@export var player:Node2D = null
 @export var speed:float = 200
 var server_ready:bool = false
 @onready var raycast = $RayCast2D
@@ -10,10 +10,25 @@ var player_id:int
 
 func _ready() -> void:
 	NavigationServer2D.map_changed.connect(navigation_server_ready)
+	
+	if(!player):
+		player =  Main.player
+	
 	if(player):
 		player_id = player.get_instance_id()
+		catAgent.target_position = player.global_position
+
 	#raycast.set_collision_mask_value(1,true)
 	#raycast.set_collision_mask_value(2,false)
+
+	actor_setup.call_deferred()
+
+func actor_setup():
+	# Wait for the first physics frame so the NavigationServer can sync.
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	await get_tree().physics_frame
+	await get_tree().physics_frame
 
 func _physics_process(_delta: float) -> void:
 
@@ -36,13 +51,15 @@ func _physics_process(_delta: float) -> void:
 		if((global_position - player.global_position).length_squared() > stop_distance):
 		
 			
-			if(player && server_ready):
+			if(player):
 				catAgent.target_position = player.global_position
 				var dir = catAgent.get_next_path_position() - global_position
 				dir = dir.normalized() * speed
 				velocity = dir		
-			move_and_slide()
+		else:
+			velocity = Vector2.ZERO
+		move_and_slide()
 
 		
-func navigation_server_ready(value):
+func navigation_server_ready(_value):
 	server_ready = true

@@ -1,0 +1,49 @@
+[gd_scene load_steps=6 format=3 uid="uid://dn2l3x0l5y1on"]
+
+[ext_resource type="Script" path="res://Scenes/Part/area_2d.gd" id="1_tajvj"]
+[ext_resource type="Texture2D" uid="uid://bydvqjr1qf7wg" path="res://Images/PartsToFind/1.png" id="2_7v1v8"]
+[ext_resource type="Texture2D" uid="uid://bstmcrmkvhby5" path="res://Images/PartsToFind/6.png" id="3_i16td"]
+[ext_resource type="Texture2D" uid="uid://d152e2hseyqe1" path="res://Images/progress.png" id="4_glk0c"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_31cca"]
+
+[node name="Part" type="Area2D"]
+position = Vector2(19, 193)
+scale = Vector2(3, 3)
+collision_layer = 0
+collision_mask = 4
+script = ExtResource("1_tajvj")
+texture_to_set = ExtResource("2_7v1v8")
+metadata/_edit_group_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_31cca")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("3_i16td")
+region_rect = Rect2(688, 224, 16, 16)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = -1.0
+offset_top = -6.0
+offset_right = 6.0
+offset_bottom = 1.0
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Control"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 4
+radial_initial_angle = 360.0
+nine_patch_stretch = true
+texture_progress = ExtResource("4_glk0c")
+tint_progress = Color(1, 1, 1, 0.486275)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

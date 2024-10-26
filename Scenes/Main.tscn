@@ -1,9 +1,16 @@
-[gd_scene load_steps=10 format=4 uid="uid://bu41pf60hmh7k"]
+[gd_scene load_steps=15 format=4 uid="uid://bu41pf60hmh7k"]
 
+[ext_resource type="Script" path="res://Scenes/main.gd" id="1_7yhdi"]
 [ext_resource type="Texture2D" uid="uid://dy8bahhr8e5gi" path="res://Images/colored-transparent_packed.png" id="1_lfnoo"]
 [ext_resource type="PackedScene" uid="uid://biubsq50by1h7" path="res://Scenes/Player/player.tscn" id="2_ehcj0"]
-[ext_resource type="PackedScene" uid="uid://c2a1uo7lutn5m" path="res://Scenes/Cat/cat.tscn" id="3_q14c4"]
-[ext_resource type="Script" path="res://Scenes/rigid_body_2d_2.gd" id="4_x7l6l"]
+[ext_resource type="Script" path="res://Scenes/control.gd" id="4_rnbwm"]
+[ext_resource type="PackedScene" uid="uid://dn2l3x0l5y1on" path="res://Scenes/Part/part.tscn" id="5_1mc6d"]
+[ext_resource type="Script" path="res://Scenes/marker_2d.gd" id="6_8q7lb"]
+[ext_resource type="Texture2D" uid="uid://bjhicl7bcrx4e" path="res://Images/PartsToFind/2.png" id="6_vtbqf"]
+[ext_resource type="Texture2D" uid="uid://cqn3m1eux3teo" path="res://Images/PartsToFind/3.png" id="7_qb0as"]
+[ext_resource type="Texture2D" uid="uid://4v44qkr7q02h" path="res://Images/PartsToFind/4.png" id="8_veo15"]
+[ext_resource type="Texture2D" uid="uid://tn47r5w3dt07" path="res://Images/PartsToFind/5.png" id="9_y42ns"]
+[ext_resource type="Texture2D" uid="uid://bstmcrmkvhby5" path="res://Images/PartsToFind/6.png" id="10_x60at"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wsy7n"]
 texture = ExtResource("1_lfnoo")
@@ -1100,17 +1107,15 @@ source_geometry_mode = 1
 source_geometry_group_name = &"nav"
 agent_radius = 30.0
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_u258d"]
-rough = true
-absorbent = true
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_pph07"]
-
 [node name="Node2D" type="Node2D"]
+script = ExtResource("1_7yhdi")
 
 [node name="Player" parent="." instance=ExtResource("2_ehcj0")]
-position = Vector2(152, 34)
-collision_layer = 2
+collision_layer = 6
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+zoom = Vector2(3, 3)
+position_smoothing_enabled = true
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." groups=["nav"]]
 position = Vector2(8, 14)
@@ -1122,6 +1127,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 59.0
 offset_bottom = 39.0
+script = ExtResource("4_rnbwm")
 
 [node name="Button" type="Button" parent="TileMapLayer/Control"]
 layout_mode = 1
@@ -1136,38 +1142,30 @@ text = "Start"
 position = Vector2(-8, -3)
 navigation_polygon = SubResource("NavigationPolygon_dw7sd")
 
-[node name="Cat" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_q14c4")]
-position = Vector2(282, 41)
-player = NodePath("../Player")
-speed = 50.0
+[node name="Part" parent="." instance=ExtResource("5_1mc6d")]
 
-[node name="RigidBody2D" type="RigidBody2D" parent="."]
-mass = 0.2
-physics_material_override = SubResource("PhysicsMaterial_u258d")
+[node name="Part2" parent="." instance=ExtResource("5_1mc6d")]
+position = Vector2(122, 137)
+texture_to_set = ExtResource("6_vtbqf")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D"]
-shape = SubResource("CircleShape2D_pph07")
+[node name="Part3" parent="." instance=ExtResource("5_1mc6d")]
+position = Vector2(-85, 153)
+texture_to_set = ExtResource("7_qb0as")
 
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D"]
-texture = ExtResource("1_lfnoo")
-region_enabled = true
-region_rect = Rect2(558.805, 222.316, 17.3799, 17.3799)
+[node name="Part4" parent="." instance=ExtResource("5_1mc6d")]
+position = Vector2(-35, 77)
+texture_to_set = ExtResource("8_veo15")
 
-[node name="RigidBody2D2" type="RigidBody2D" parent="."]
-mass = 0.2
-physics_material_override = SubResource("PhysicsMaterial_u258d")
-lock_rotation = true
-angular_damp_mode = 1
-script = ExtResource("4_x7l6l")
+[node name="Part5" parent="." instance=ExtResource("5_1mc6d")]
+position = Vector2(139, 64)
+texture_to_set = ExtResource("9_y42ns")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RigidBody2D2"]
-shape = SubResource("CircleShape2D_pph07")
+[node name="Part6" parent="." instance=ExtResource("5_1mc6d")]
+position = Vector2(162, 216)
+texture_to_set = ExtResource("10_x60at")
 
-[node name="Sprite2D" type="Sprite2D" parent="RigidBody2D2"]
-texture = ExtResource("1_lfnoo")
-region_enabled = true
-region_rect = Rect2(558.805, 222.316, 17.3799, 17.3799)
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(530, 132)
+script = ExtResource("6_8q7lb")
 
-[node name="Camera2D" type="Camera2D" parent="RigidBody2D2"]
-zoom = Vector2(3, 3)
-position_smoothing_enabled = true
+[connection signal="button_down" from="TileMapLayer/Control/Button" to="TileMapLayer/Control" method="_on_button_button_down"]

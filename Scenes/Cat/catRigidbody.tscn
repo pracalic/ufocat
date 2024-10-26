@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://dge4ryt7t5ly8"]
+
+[ext_resource type="Script" path="res://Scenes/Cat/cat_rigidbody.gd" id="1_52sje"]
+[ext_resource type="Texture2D" uid="uid://dreg76xs8th4" path="res://Images/heroes2.png" id="2_wqwi1"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_8bjad"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_m7gyc"]
+radius = 13.0
+
+[node name="Cat" type="RigidBody2D"]
+collision_layer = 2
+collision_mask = 3
+physics_material_override = SubResource("PhysicsMaterial_8bjad")
+lock_rotation = true
+script = ExtResource("1_52sje")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("2_wqwi1")
+region_enabled = true
+region_rect = Rect2(127.29, -2.86278, 173.03, 171.433)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(1, 6)
+shape = SubResource("CircleShape2D_m7gyc")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+avoidance_layers = 0
+avoidance_mask = 0
+debug_enabled = true
+debug_path_custom_color = Color(1, 0, 1, 1)
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+modulate = Color(0, 0.101961, 1, 1)
+collision_mask = 3
